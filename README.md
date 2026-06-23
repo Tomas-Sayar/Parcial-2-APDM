@@ -1,33 +1,68 @@
 # Parcial 2
 
-This template should help get you started developing with Vue 3 in Vite.
+Aplicacion web hecha con Vue 3 y Vite para explorar peliculas usando la API de The Movie Database (TMDb).
 
-## Recommended IDE Setup
+## Caracteristicas
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+- Listado de peliculas populares.
+- Busqueda por nombre.
+- Filtros por genero y certificacion.
+- Vista de detalle de una pelicula.
+- Gestion de favoritas guardadas en `IndexedDB`.
+- Interfaz responsive con Bootstrap y estilos personalizados
 
-## Recommended Browser Setup
+## Tecnologias
 
-Use any modern browser with JavaScript enabled.
+- Vue 3
+- Vite
+- Bootstrap 5
+- IndexedDB para persistencia local
+- TMDb API para datos de peliculas
 
-## Customize configuration
+## Requisitos
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+- Node.js `20.19.0` o superior compatible con el rango definido en `package.json`
+- `pnpm`
 
-## Project Setup
+## Instalacion
 
 ```sh
 pnpm install
 ```
 
-### Compile and Hot-Reload for Development
+## Ejecucion en desarrollo
+
+La aplicacion se inicia en `http://localhost:3000`.
 
 ```sh
 pnpm dev
 ```
 
-### Compile and Minify for Production
+## Build de produccion
 
 ```sh
 pnpm build
 ```
+
+## Vista previa del build
+
+```sh
+pnpm preview
+```
+
+## Estructura general
+
+- `src/App.vue`: componente principal y logica de consumo de API, filtros y favoritos.
+- `src/components/`: componentes visuales de la app.
+- `src/services/favoritesDb.js`: capa de persistencia con `IndexedDB`.
+- `public/`: recursos estaticos.
+
+## Nota sobre la API
+
+La app consume TMDb mediante un token embebido en el codigo fuente. Si en algun momento cambias la API o decides mover esa configuracion a variables de entorno, tendras que actualizar `src/App.vue`.
+
+## Recomendaciones
+
+- Usar un navegador moderno con JavaScript habilitado.
+- Si queres cambiar el puerto de desarrollo, modifica `server.port` en `vite.config.js`.
+- Si el cache o las favoritas se comportan raro durante pruebas, limpia los datos del sitio desde el navegador porque se guardan en `IndexedDB`.
