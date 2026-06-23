@@ -63,7 +63,7 @@ const genreLabel = (genreIds) => {
     </div>
 
     <div v-if="!movies.length && !loadingPopular && !loadingSearch" class="empty-state text-center py-5">
-      No hay películas para mostrar con esos filtros.
+      No se encontraron peliculas
     </div>
   </div>
 </template>

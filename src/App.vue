@@ -44,7 +44,17 @@ const certificationLabel = computed(() => {
   return found?.label ?? 'Todas las edades'
 })
 
-const movieList = computed(() => (activeView.value === 'search' ? searchResults.value : popularMovies.value))
+const movieList = computed(() => {
+  const baseList = activeView.value === 'search' ? searchResults.value : popularMovies.value
+
+  return baseList.filter((movie) => {
+    const matchesGenre =
+      !selectedGenre.value ||
+      movie.genre_ids?.includes(Number(selectedGenre.value))
+
+    return matchesGenre
+  })
+})
 
 async function fetchJson(url) {
   const response = await fetch(url, { headers: authHeaders })
@@ -217,6 +227,14 @@ main {
 .empty-state {
   background: rgba(255, 255, 255, 0.96);
   color: #111827;
+}
+
+[data-bs-theme='dark'] .stats-card,
+[data-bs-theme='dark'] .controls,
+[data-bs-theme='dark'] .movie-card,
+[data-bs-theme='dark'] .empty-state {
+  background: rgba(33, 37, 41, 0.96);
+  color: var(--bs-body-color);
 }
 
 .detail-card {
