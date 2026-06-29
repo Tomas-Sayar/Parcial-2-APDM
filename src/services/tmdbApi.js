@@ -1,62 +1,89 @@
-const API_TOKEN =
-  'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZjdmYzI4MDRmOWU3Njg3OGI2M2Y4N2Q2YjQ5ZjEyYSIsInN1YiI6IjZhMzBiNTY0ZTMyNWYwMWZhZjc0M2QyNyIsIm5iZiI6MTc4MTU3NzA2MC45NDcsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.F5xFJZS9azIlZeGD0EbeAcpB6RHP3yH7R87xfVpWJLM'
-
+const API_KEY = 'af7fc2804f9e76878b63f87d6b49f12a'
 const BASE_URL = 'https://api.themoviedb.org/3'
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p'
 
-const authHeaders = {
-  accept: 'application/json',
-  Authorization: `Bearer ${API_TOKEN}`,
-}
 
-async function fetchJson(url) {
-  const response = await fetch(url, { headers: authHeaders })
 
-  if (!response.ok) {
-    throw new Error(`Error HTTP ${response.status}`)
+async function pedirDatosATMDB(url) {
+  const separador = url.includes('?') ? '&' : '?'
+  const urlConKey = url + separador + 'api_key=' + API_KEY
+  
+  const respuesta = await fetch(urlConKey)
+
+  if (respuesta.ok === false) {
+    throw new Error('Error en la petición: ' + respuesta.status)
   }
-
-  return response.json()
+  
+  return await respuesta.json()
 }
 
+
+// OBTENER GÉNEROS DE PELÍCULAS
 export async function getGenres() {
-  const data = await fetchJson(`${BASE_URL}/genre/movie/list?language=es-ES`)
-  return data.genres ?? []
+  const datos = await pedirDatosATMDB(BASE_URL + '/genre/movie/list?language=es-ES')
+  
+  if (datos.genres) {
+    return datos.genres
+  } else {
+    return []
+  }
 }
 
-export async function getPopularMovies({ genreId, certification }) {
-  const params = new URLSearchParams({
-    language: 'es-ES',
-    sort_by: 'popularity.desc',
-    page: '1',
-  })
 
-  if (genreId) {
-    params.set('with_genres', String(genreId))
+// OBTENER PELÍCULAS POPULARES
+export async function getPopularMovies(parametros) {
+
+  let parametrosURL = 'language=es-ES&sort_by=popularity.desc&page=1'
+  
+  if (parametros.genreId) {
+    parametrosURL = parametrosURL + '&with_genres=' + parametros.genreId
   }
-
-  if (certification) {
-    params.set('certification_country', 'US')
-    params.set('with_certification', certification)
+  
+  if (parametros.certification) {
+    parametrosURL = parametrosURL + '&certification_country=US&with_certification=' + parametros.certification
   }
-
-  const data = await fetchJson(`${BASE_URL}/discover/movie?${params.toString()}`)
-  return data.results ?? []
+  
+  const datos = await pedirDatosATMDB(BASE_URL + '/discover/movie?' + parametrosURL)
+  
+  if (datos.results) {
+    return datos.results
+  } else {
+    return []
+  }
 }
 
+
+// BUSCAR PELÍCULAS POR NOMBRE
 export async function searchTmdbMovies(query) {
-  const data = await fetchJson(
-    `${BASE_URL}/search/movie?query=${encodeURIComponent(query)}&language=es-ES&page=1&include_adult=false`
-  )
-  return data.results ?? []
+
+  const queryCodificada = encodeURIComponent(query)
+  
+  const url = BASE_URL + '/search/movie?query=' + queryCodificada + '&language=es-ES&page=1&include_adult=false'
+  const datos = await pedirDatosATMDB(url)
+  
+  if (datos.results) {
+    return datos.results
+  } else {
+    return []
+  }
 }
 
+
+// OBTENER DETALLES DE UNA PELÍCULA ESPECÍFICA
 export async function getMovieDetails(movieId) {
-  return fetchJson(
-    `${BASE_URL}/movie/${movieId}?language=es-ES&append_to_response=videos,credits,release_dates`
-  )
+  const url = BASE_URL + '/movie/' + movieId + '?language=es-ES&append_to_response=videos,credits,release_dates'
+  return await pedirDatosATMDB(url)
 }
 
-export function getImageUrl(path, size = 'w500') {
-  return path ? `${IMAGE_BASE_URL}/${size}${path}` : ''
+
+// OBTENER URL DE IMAGEN
+export function getImageUrl(path, size) {
+  if (!path) {
+    return ''
+  }
+  if (!size) {
+    size = 'w500'
+  }
+  
+  return IMAGE_BASE_URL + '/' + size + path
 }

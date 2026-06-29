@@ -54,18 +54,18 @@ const genreLabel = (genreIds) => {
     <div v-else-if="loadingSearch && activeView === 'search'" class="text-center py-5">
       <div class="spinner-border text-primary" role="status"></div>
     </div>
-    <div v-else class="movie-grid">
-      <MovieCard
-        v-for="movie in movies"
-        :key="movie.id"
-        :movie="movie"
-        :is-favorite="favoriteIds.includes(movie.id)"
-        :image-url="imageUrl"
-        :format-year="formatYear"
-        :genre-label="genreLabel"
-        @select="emit('select', $event)"
-        @toggle-favorite="emit('toggle-favorite', $event)"
-      />
+    <div v-else class="row g-4">
+      <div v-for="movie in movies" :key="movie.id" class="col-sm-6 col-md-4 col-lg-3">
+        <MovieCard
+          :movie="movie"
+          :is-favorite="favoriteIds.includes(movie.id)"
+          :image-url="imageUrl"
+          :format-year="formatYear"
+          :genre-label="genreLabel"
+          @select="emit('select', $event)"
+          @toggle-favorite="emit('toggle-favorite', $event)"
+        />
+      </div>
     </div>
 
     <div v-if="!movies.length && !loadingPopular && !loadingSearch" class="empty-state text-center py-5">

@@ -289,34 +289,13 @@ main {
   z-index: 1;
 }
 
-.stats-card,
-.controls,
-.movie-card,
-.empty-state {
-  background: rgba(255, 255, 255, 0.96);
-  color: #111827;
-}
-
-[data-bs-theme='dark'] .stats-card,
-[data-bs-theme='dark'] .controls,
-[data-bs-theme='dark'] .movie-card,
-[data-bs-theme='dark'] .empty-state {
-  background: rgba(33, 37, 41, 0.96);
-  color: var(--bs-body-color);
-}
-
 .detail-card {
   background: rgba(15, 23, 42, 0.96);
   color: #f8fafc;
 }
 
-.movie-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-  gap: 1rem;
-}
-
 .movie-card {
+  position: relative;
   cursor: pointer;
   transition: transform 0.18s ease, box-shadow 0.18s ease;
   overflow: hidden;
@@ -367,10 +346,6 @@ main {
   border-radius: 999px;
 }
 
-.favorites-launcher {
-  box-shadow: 0 1rem 2rem rgba(245, 158, 11, 0.24);
-}
-
 .favorite-btn {
   position: absolute;
   top: 0.75rem;
@@ -398,10 +373,6 @@ main {
 .favorite-btn--idle {
   color: #dc2626;
   opacity: 0.78;
-}
-
-.movie-card {
-  position: relative;
 }
 
 .favorites-modal-backdrop {

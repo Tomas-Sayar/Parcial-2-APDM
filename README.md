@@ -59,7 +59,7 @@ pnpm preview
 
 ## Nota sobre la API
 
-La app consume TMDb mediante un token embebido en el codigo fuente. Si en algun momento cambias la API o decides mover esa configuracion a variables de entorno, tendras que actualizar `src/App.vue`.
+La app consume TMDb mediante una API key embebida en el codigo fuente (`src/services/tmdbApi.js`). Si en algun momento cambias la API o decides mover esa configuracion a variables de entorno, tendras que actualizar ese archivo.
 
 ## Recomendaciones
 
